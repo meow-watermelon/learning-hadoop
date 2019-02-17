@@ -1,0 +1,62 @@
+Environment Tracking Sheet: https://docs.google.com/spreadsheets/d/1CXUpaf3HEyJ2ipY80ezcM0TH_6IlBhKm5iPJh5vnuaM/edit?usp=sharing
+
+Linux:
+
+# usermod -a -G wheel ericlee
+# systemctl disable firewalld
+# systemctl enable sshd
+# systemctl start sshd
+
+FreeBSD:
+
+# pkg install sudo vim
+# adduser ericlee
+# pw groupmod wheel -M ericlee
+# sudoers file: /usr/local/etc/sudoers
+
+# modify /etc/rc.conf to enable SSH/NFS services
+
+sshd_enable="YES"
+rpcbind_enable="YES"
+nfs_server_enable="YES"
+mountd_flags="-r"
+mountd_enable="YES"
+rpc_lockd_enable="YES"
+rpc_statd_enable="YES"
+
+# cat /etc/exports 
+/vol -maproot=root -network 192.168.122.0/24
+
+# service nfsd restart
+# service mountd restart (restart this service to refresh exports)
+# service lockd restart
+# service statd restart
+
+Workstation:
+
+$ cat hosts | while read line; do ssh-copy-id ericlee@${line}; done
+# cat hosts | while read line; do ssh-copy-id root@${line}; done
+$ pdsh -l root -u 600 -R ssh -w nn1.internal,nn2.internal,dn1.internal,dn2.internal,dn3.internal,dn4.internal 'setenforce Permissive'
+$ pdsh -l root -u 600 -R ssh -w nn1.internal,nn2.internal,dn1.internal,dn2.internal,dn3.internal,dn4.internal 'dnf install hadoop-common hadoop-common-native hadoop-hdfs -y'
+$ pdsh -l root -u 600 -R ssh -w dn1.internal,dn2.internal,dn3.internal,dn4.internal 'chown -R hdfs:hadoop /data'
+$ pdsh -l root -u 600 -R ssh -w dn1.internal,dn2.internal,dn3.internal,dn4.internal 'chmod -R 777 /data'
+$ pdsh -l root -u 600 -R ssh -w dn1.internal,dn2.internal,dn3.internal,dn4.internal 'systemctl start hadoop-datanode'
+$ pdsh -l root -u 600 -R ssh -w dn1.internal,dn2.internal,dn3.internal,dn4.internal 'systemctl enable hadoop-datanode'
+
+Name Node:
+
+# mkdir /mnt/nn
+# modify /etc/fstab
+nfs.internal:/vol /mnt/nn nfs rw,noatime 0 0
+# mount -a -vvv
+# mkdir -p /var/lib/hadoop-hdfs/hdfs/dfs/namenode
+# chown -R hdfs:hadoop /var/lib/hadoop-hdfs
+# hdfs-create-dirs
+# systemctl start hadoop-namenode
+# systemctl enable hadoop-namenode
+
+Data Node:
+
+Test Command:
+
+$ sudo -u hdfs hdfs dfs -mkdir /tmp
