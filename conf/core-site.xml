@@ -22,6 +22,15 @@
     <name>fs.default.name</name>
     <value>hdfs://nn1.internal:8020</value>
   </property>
+  <property>
+    <name>net.topology.node.switch.mapping.impl</name>
+    <value>org.apache.hadoop.net.TableMapping</value>
+  </property>
+  <property>
+    <name>net.topology.table.file.name</name>
+    <value>/etc/hadoop/racks.map</value>
+  </property>
+
 
   <!-- HTTPFS proxy user setting -->
   <property>

@@ -1,0 +1,5 @@
+# rack-awareness w/ mapping file
+
+1. copy core-site.xml and rack mapping files to NN/DN /etc/hadoop directory
+2. restart NN
+3. verify the topology by using "hdfs dfsadmin -printTopology"
