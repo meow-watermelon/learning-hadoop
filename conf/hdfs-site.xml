@@ -49,6 +49,14 @@
      <value>file:///var/lib/hadoop-hdfs/${user.name}/dfs/secondarynamenode</value>
   </property>
   <property>
+     <name>dfs.namenode.checkpoint.txns</name>
+     <value>1000000</value>
+  </property>
+  <property>
+     <name>dfs.namenode.edit.log.autoroll.multiplier.threshold</name>
+     <value>2.0</value>
+  </property>
+  <property>
      <name>dfs.hosts</name>
      <value>/etc/hadoop/dfs.include</value>
   </property>
