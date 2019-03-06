@@ -20,7 +20,7 @@
 <configuration>
   <property>
     <name>fs.default.name</name>
-    <value>hdfs://nn1.internal:8020</value>
+    <value>hdfs://nn.internal:8020</value>
   </property>
   <property>
     <name>net.topology.node.switch.mapping.impl</name>

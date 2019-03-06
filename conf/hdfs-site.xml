@@ -42,7 +42,7 @@
   </property>
   <property>
      <name>dfs.namenode.name.dir</name>
-     <value>file:///var/lib/hadoop-hdfs/${user.name}/dfs/namenode, file:///mnt/nn</value>
+     <value>file:///var/lib/hadoop-hdfs/${user.name}/dfs/namenode, file:///mnt/nn1</value>
   </property>
   <property>
      <name>dfs.namenode.checkpoint.dir</name>
